@@ -26,6 +26,17 @@ class Automator(ABC):
         pass
 
     @abstractmethod
+    def long_click(self, x, y):
+        """
+        Long click at (x, y)
+
+        Args:
+            x (float): The X coordinate.
+            y (float): The Y coordinate.
+        """
+        pass
+
+    @abstractmethod
     def drag(self, x1, y1, x2, y2, speed=2000):
         """
         Drag from (x1, y1) to (x2, y2)

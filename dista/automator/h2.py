@@ -14,14 +14,21 @@ class H2(Automator):
     def click(self, x, y):
         return self._driver.click(x, y)
 
+    def long_click(self, x, y):
+        return self._driver.long_click(x, y)
+
     def drag(self, x1, y1, x2, y2, speed=2000):
         return self._driver.swipe(x1, y1, x2, y2, speed)
 
     def swipe(self, direction, scale):
-        if direction == SwipeDirection.RIGHT :
+        if direction == SwipeDirection.LEFT :
             self._driver.swipe(0.5, 0.5, 0.5-scale, 0.5, 500)
-        elif direction == SwipeDirection.LEFT :
+        elif direction == SwipeDirection.RIGHT :
             self._driver.swipe(0.5, 0.5, 0.5+scale, 0.5, 500)
+        elif direction == SwipeDirection.UP :
+            self._driver.swipe(0.5, 0.5, 0.5, 0.5-scale, 500)
+        elif direction == SwipeDirection.DOWN :
+            self._driver.swipe(0.5, 0.5, 0.5, 0.5+scale, 500)
 
     def dump_hierarchy(self):
         return VHTParser.parse(self._driver.dump_hierarchy())

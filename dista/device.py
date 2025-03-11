@@ -42,6 +42,13 @@ class Device(object):
         (x, y) = node.attrib['center']
         return self.automator.click(x, y)
 
+    def long_click(self, x, y):
+        return self.automator.long_click(x, y)
+
+    def long_click(self, node):
+        (x, y) = node.attrib['center']
+        return self.automator.long_click(x, y)
+
     def drag(self, x1, y1, x2, y2, speed=2000):
         return self.automator.drag(x1, y1, x2, y2, speed)
 
