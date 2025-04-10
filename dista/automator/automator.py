@@ -15,6 +15,41 @@ class Automator(ABC):
         pass
 
     @abstractmethod
+    def install_app(self, app):
+        """
+        Install an app.
+        """
+        pass
+
+    @abstractmethod
+    def uninstall_app(self, app):
+        """
+        Uninstall an app.
+        """
+        pass
+
+    @abstractmethod
+    def start_app(self, app):
+        """
+        Start an app.
+        """
+        pass
+
+    @abstractmethod
+    def stop_app(self, app):
+        """
+        Stop an app.
+        """
+        pass
+
+    @abstractmethod
+    def restart_app(self, app):
+        """
+        Restart an app.
+        """
+        pass
+
+    @abstractmethod
     def click(self, x, y):
         """
         Click at (x, y)
@@ -68,7 +103,7 @@ class Automator(ABC):
         Dump the UI hierarchy of the device screen.
 
         Returns:
-            Dict: The dumped UI hierarchy as a dictionary.
+            VHT: The dumped UI hierarchy as a object of VHT.
         """
         pass
 
@@ -85,13 +120,23 @@ class Automator(ABC):
         """
         pass
 
+    # @abstractmethod
+    # def display_rotation(self):
+    #     """
+    #     Get display rotation about the device.
+
+    #     Returns:
+    #         w, h (int, int): The width and height of the display.
+    #     """
+    #     pass
+
     @abstractmethod
-    def display_rotation(self):
+    def display_info(self, refresh=True):
         """
-        Get display rotation about the device.
+        Get display info about the device.
 
         Returns:
-            w, h (int, int): The width and height of the display.
+            Dict: The display info as a dict.
         """
         pass
 

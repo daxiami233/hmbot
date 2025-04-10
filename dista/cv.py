@@ -1,0 +1,16 @@
+import cv2
+import numpy as np
+import time
+import math
+
+def read(img_path):
+    img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+    return img
+
+def write(img_path, img):
+    cv2.imwrite(img_path, img)
+
+def _crop(img, bound):
+    (x1, y1), (x2, y2) = bound
+    return img[y1:y2, x1:x2]
+

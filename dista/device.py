@@ -1,17 +1,11 @@
 import sys
 from typing import Union
 from loguru import logger
-from .connector.adb import ADB
-from .connector.hdc import HDC
-from .automator.u2 import U2
-from .automator.h2 import H2
+from .app.app import App
 from .exception import*
-from .proto import OperatingSystem, SwipeDirection
-
-system_mapping = {
-    OperatingSystem.ANDROID: (ADB, U2),
-    OperatingSystem.HARMONY: (HDC, H2)
-}
+from .proto import SwipeDirection
+from .rfl import system_rfl
+from .window import Window
 
 class Device(object):
     """
@@ -28,12 +22,27 @@ class Device(object):
         self.serial = device_serial
         self.operating_system = operating_system
         try:
-            connector_cls, automator_cls = system_mapping[self.operating_system]
+            connector_cls, automator_cls = system_rfl[self.operating_system]
             self.connector = connector_cls(self)
             self.automator = automator_cls(self)
         except OSKeyError:
             logger.error("%s is not supported" % operating_system)
             sys.exit(-1)
+
+    def install_app(self, app):
+        self.automator.install_app(app)
+
+    def uninstall_app(self, app):
+        self.automator.uninstall_app(app)
+
+    def start_app(self, app):
+        self.automator.start_app(app)
+
+    def stop_app(self, app):
+        self.automator.stop_app(app)
+
+    def restart_app(self, app):
+        self.automator.restart_app(app)
     
     def click(self, x, y):
         return self.automator.click(x, y)
@@ -75,3 +84,9 @@ class Device(object):
 
     def recent(self):
         self.automator.recent()
+    
+    def dump_window(self):
+        vht = self.dump_hierarchy()
+        screen = self.screenshot()
+        window = Window(vht=vht, screen=screen)
+        return window

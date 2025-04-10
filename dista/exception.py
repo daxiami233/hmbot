@@ -6,3 +6,12 @@ class JsonKeyError(Exception):
 
 class BoundsError(Exception):
     pass
+
+class DeviceError(Exception):
+    pass
+
+class HDCError(Exception):
+    pass
+
+class ADBError(Exception):
+    pass
