@@ -138,9 +138,9 @@ class VHTParser(object):
                 (x1, y1, x2, y2) = map(int, match.groups())
             else: 
                 raise BoundsError('%s is not in form [x1,y1][x2,y2]' % extra['bounds'])
-            attrib = {'bundleName': '', 'page': ''}
+            attrib = {'bundle': '', 'page': ''}
             if 'bundleName' in extra:
-                attrib['bundleName'] = extra['bundleName']
+                attrib['bundle'] = extra['bundleName']
                 attrib['page'] = extra['pagePath']
 
             root = VHTNode(attrib=attrib,
@@ -169,7 +169,7 @@ class VHTParser(object):
 
     @classmethod
     def __parse_adb_xml(cls, source):
-        attrib = {'bundleName': '', 'page': ''}
+        attrib = {'bundle': '', 'page': ''}
         if source.tag == 'hierarchy':
             root = VHTNode(attrib=attrib,
                            bounds = [[0,0],[0,0]],
@@ -189,7 +189,7 @@ class VHTParser(object):
                 (x1, y1, x2, y2) = map(int, match.groups())
             else: 
                 raise BoundsError('%s is not in form [x1,y1][x2,y2]' % extra['bounds'])
-            attrib['bundleName'] = extra['package']
+            attrib['bundle'] = extra['package']
             root = VHTNode(attrib=attrib,
                            bounds = [[x1,y1],[x2,y2]],
                            clickable = extra['clickable'],

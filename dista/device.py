@@ -4,7 +4,7 @@ from loguru import logger
 from .app.app import App
 from .exception import*
 from .proto import SwipeDirection
-from .rfl import system_rfl
+from .rfl.system_rfl import system_rfl
 from .window import Window
 
 class Device(object):
@@ -70,11 +70,11 @@ class Device(object):
     def screenshot(self, path=''):
         return self.automator.screenshot(path)
 
-    def display_size(self):
-        return self.automator.display_size()
+    # def display_size(self):
+    #     return self.automator.display_size()
 
-    def display_rotation(self):
-        return self.automator.display_rotation()
+    # def display_rotation(self):
+    #     return self.automator.display_rotation()
     
     def home(self):
         self.automator.home()
@@ -90,3 +90,6 @@ class Device(object):
         screen = self.screenshot()
         window = Window(vht=vht, screen=screen)
         return window
+
+    def current_ability(self):
+        return self.connector.current_ability()

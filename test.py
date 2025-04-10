@@ -7,19 +7,16 @@ from dista.event import KeyEvent
 from dista.proto import SystemKey
 from dista.ptg import PTG
 from dista.page import Page
+from dista.app.harmony_app import HarmonyApp
+from dista.app.app import App
 
-ptg = PTG()
-p1 = Page()
-p2 = Page()
-ptg.add_edge(p1, p1, 2)
-ptg.add_edge(p1, p2, 3)
-ptg.add_edge(p1, p2, 1)
-print(ptg._adj_list)
-exit(0)
 
-device1 = Device('127.0.0.1:5557', 'harmony')
-event = KeyEvent(page='', device=device1, key=SystemKey.BACK)
-event.execute()
+device1 = Device('127.0.0.1:5555', 'harmony')
+app = HarmonyApp(device=device1)
+print(app.bundle, app.entry, app.main_page, app.name)
+print(isinstance(app, App))
+print(isinstance(app, HarmonyApp))
+# print(device1.connector.current_ability())
 # device2 = Device('emulator-5554', 'android')
 # print(device.connector._hidumper('AbilityManagerService', '-i 16'))
 # print(device.connector.get_current_ability())

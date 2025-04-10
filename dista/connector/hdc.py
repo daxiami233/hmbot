@@ -5,6 +5,8 @@ import subprocess, re
 
 class HDC(Connector):
     def __init__(self, device = None):
+        if device is None and len(HDC.devices()) > 0:
+            self.serial = HDC.devices()[0]
         from ..device import Device
         if isinstance(device, Device):
             self.serial = device.serial
@@ -23,13 +25,11 @@ class HDC(Connector):
         args = [] + self.cmd_prefix
         args += extra_args
 
-        logger.debug('command:')
-        logger.debug(args)
+        logger.debug('command: %s'%args)
         r = subprocess.check_output(args).strip()
         if not isinstance(r, str):
             r = r.decode()
-        logger.debug('return:')
-        logger.debug(r)
+        logger.debug('return: %s'%r)
         return r
 
     def shell(self, extra_args):
@@ -52,10 +52,26 @@ class HDC(Connector):
         extra_args = ['hidumper', '-s', ability, '-a'] + extra_args
         return self.shell(extra_args)
 
-    def get_current_ability(self):
+    def shell_grep(self, extra_args, grep_args):
+        pass
+
+    def current_ability(self):
         missions = self._hidumper(ability='AbilityManagerService', extra_args='-l')
-        current_mission_re = re.compile('.*current mission lists:{(.*?)}.*', flags=re.DOTALL)
+        missions = missions.split('}')
         infos_re = re.compile('.*app name \[(.*)\].*main name \[(.*)\].*bundle name \[(.*)\].*ability type.*', flags=re.DOTALL)
-        match = current_mission_re.match(missions)
-        if match:
-            return infos_re.match(match.group(1)).groups()
+        for mission in missions:
+            if 'state #FOREGROUND  start time' in mission and 'app state #FOREGROUND' in mission:
+                match = infos_re.match(mission)
+                if match:
+                    return {'app': match.groups()[0],
+                            'ability': match.groups()[1],
+                            'bundle': match.groups()[2]}
+    
+    def devices(cls):
+        args = ['hdc', 'list', 'targets']
+        logger.debug('command: %s'%args)
+        r = subprocess.check_output(args).strip()
+        if not isinstance(r, str):
+            r = r.decode()
+        logger.debug('return: %s'%r)
+        return r.splitlines()
