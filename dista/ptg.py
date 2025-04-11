@@ -2,15 +2,23 @@ from .page import Page
 from .event import Event
 
 class PTG(object):
-    def __init__(self, main_page=Page()):
-        self.main_page = main_page
-        self.pages = [main_page]
+    def __init__(self):
+        self.main_pages = []
+        self.pages = []
         self._adj_list = {}
 
     
+    def add_main_page(self, page):
+        if self.add_page(self, page):
+            self.main_pages.append(page)
+            return True
+        return False
+
     def add_page(self, page):
         if self._is_new_page(page):
             self.pages.append(page)
+            return True
+        return False
     
     def add_edge(self, src_page, tgt_page, events):
         self.add_page(src_page)
@@ -29,7 +37,6 @@ class PTG(object):
                 return False
         return True
 
-    pass
 
 class PTGParser(object):
     def parse(cls, file):
@@ -39,3 +46,4 @@ class PTGParser(object):
     @classmethod
     def dump(cls, ptg, file, indent=2):
         pass
+

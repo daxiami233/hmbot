@@ -6,6 +6,7 @@ class Page(object):
         self.ability = ability
         self.bundle = bundle
         self.resource = {**resource}
+        
     
     def _is_same(self, page):
         #todo
