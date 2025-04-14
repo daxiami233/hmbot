@@ -51,3 +51,11 @@ class ResourceType:
     CAMERA = 'camera'
     MICRO = 'micro'
     KEYBOARD = 'keyboard'
+
+class AudioStatus:
+    START = 'START'
+    START_ = 'START*'
+    PAUSE = 'PAUSE'
+    PAUSE_ = 'PAUSE*'
+    DUCK = 'DUCK'
+    STOP = 'STOP'

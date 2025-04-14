@@ -80,8 +80,9 @@ class ADB(Connector):
                     }
         return {}
 
-    def get_uid(self, package_name):
-        process_lines = self.shell_grep("ps", package_name).splitlines()
+    def get_uid(self):
+        bundle = self.current_ability().get('bundle')
+        process_lines = self.shell_grep("ps", bundle).splitlines()
         if len(process_lines) > 0:
             usr_name = process_lines[0].split()[0]
             uid = str(int(usr_name.split('_a')[1]) + 10000)
@@ -130,8 +131,7 @@ class ADB(Connector):
             if m:
                 (uid, pid) = client_dict[m.group(2)]
                 focus_dict[(uid, pid)] = (m.group(3), m.group(4))
-        package_name = self.current_ability().get('app')
-        uid_ = self.get_uid(package_name)
+        uid_ = self.get_uid()
         audio_status = ''
         for (uid, pid), status in audio_status_dict.items():
             if uid != uid_:

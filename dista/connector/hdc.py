@@ -60,7 +60,27 @@ class HDC(Connector):
         return self.shell(extra_args)
 
     def shell_grep(self, extra_args, grep_args):
-        pass
+        if isinstance(extra_args, str):
+            extra_args = extra_args.split()
+        if isinstance(grep_args, str):
+            grep_args = grep_args.split()
+        if not isinstance(extra_args, list) or not isinstance(grep_args, list):
+            msg = "invalid arguments: %s\nshould be str, %s given" % (extra_args, type(extra_args))
+            logger.warning(msg)
+            raise HDCError(msg)
+
+        args = self.cmd_prefix + ['shell'] + [quote(arg) for arg in extra_args]
+        grep_args = ['grep'] + [quote(arg) for arg in grep_args]
+
+        proc1 = subprocess.Popen(args, stdout=subprocess.PIPE)
+        proc2 = subprocess.Popen(grep_args, stdin=proc1.stdout,
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        proc1.stdout.close()  # Allow proc1 to receive a SIGPIPE if proc2 exits.
+        out, err = proc2.communicate()
+        if not isinstance(out, str):
+            out = out.decode()
+        return out
 
     def current_ability(self):
         missions = self._hidumper(ability='AbilityManagerService', extra_args='-l')
@@ -108,7 +128,7 @@ class HDC(Connector):
         uid = self.get_uid()
         pid = self.get_pid()
 
-        session_id_infos = self.shell_grep("hidumper -s AudioDistributed", "sessionId").split('\n')
+        session_id_infos = self.shell_grep("hidumper -s AudioDistributed", "sessionId").splitlines()
         session_id = 0
         for session_id_info in session_id_infos:
             session_id_info = session_id_info.strip()
@@ -117,7 +137,7 @@ class HDC(Connector):
             if match:
                 session_id = match.group(1)
 
-        stream_id_infos = self.shell_grep("hidumper -s AudioDistributed", "Stream").split('\n')
+        stream_id_infos = self.shell_grep("hidumper -s AudioDistributed", "Stream").splitlines()
         stream_id_list = []
         for stream_id_info in stream_id_infos:
             stream_id_re = re.compile('.*Stream Id: (\d+).*')
@@ -126,7 +146,7 @@ class HDC(Connector):
                 stream_id = match.groups()[0]
                 stream_id_list.append(stream_id)
 
-        status_infos = self.shell_grep("hidumper -s AudioDistributed", "Status").split('\r')
+        status_infos = self.shell_grep("hidumper -s AudioDistributed", "Status").splitlines()
         status_list = []
         for status_info in status_infos:
             status_info = status_info.strip()
@@ -135,10 +155,14 @@ class HDC(Connector):
             if match:
                 status = match.groups()[0]
                 status_list.append(status)
-
+        status = ''
         for index, stream_id in enumerate(stream_id_list):
             if stream_id == session_id:
-                return status_list[index]
+                status = status_list[index]
+        if status in ['RUNNING']:
+            return 'START'
+        if 'STOPPED' in status:
+            return 'STOP'
         return
 
     def get_camera_status(self):
