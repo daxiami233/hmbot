@@ -45,3 +45,9 @@ class DisplayInfo:
     width: int
     height: int
     rotation: DisplayRotation
+
+class ResourceType:
+    AUDIO = 'audio'
+    CAMERA = 'camera'
+    MICRO = 'micro'
+    KEYBOARD = 'keyboard'
