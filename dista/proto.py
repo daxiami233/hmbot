@@ -45,3 +45,17 @@ class DisplayInfo:
     width: int
     height: int
     rotation: DisplayRotation
+
+class ResourceType:
+    AUDIO = 'audio'
+    CAMERA = 'camera'
+    MICRO = 'micro'
+    KEYBOARD = 'keyboard'
+
+class AudioStatus:
+    START = 'START'
+    START_ = 'START*'
+    PAUSE = 'PAUSE'
+    PAUSE_ = 'PAUSE*'
+    DUCK = 'DUCK'
+    STOP = 'STOP'
