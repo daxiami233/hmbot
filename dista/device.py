@@ -91,5 +91,8 @@ class Device(object):
         window = Window(vht=vht, screen=screen)
         return window
 
+    def dump_page(self, app):
+        return self.dump_window().current_page(app)
+
     def current_ability(self):
         return self.connector.current_ability()

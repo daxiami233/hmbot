@@ -2,11 +2,11 @@ from .page import Page
 from .event import Event
 
 class PTG(object):
-    def __init__(self):
-        self.main_pages = []
-        self.pages = []
+    def __init__(self, main_page):
+        self.main_pages = [main_page]
+        self.pages = [main_page]
         self._adj_list = {}
-
+        self._visited = {}
     
     def add_main_page(self, page):
         if self.add_page(self, page):
