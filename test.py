@@ -1,21 +1,24 @@
-from dista.device import Device
-from dista.connector.hdc import HDC
-from dista.vht import VHTParser
-import cv2
+from hmbot.device import Device
+from hmbot.connector.hdc import HDC
+from hmbot.vht import VHTParser
+from hmbot.cv import write
 import uiautomator2
-from dista.event import KeyEvent
-from dista.proto import SystemKey
-from dista.ptg import PTG
-from dista.page import Page
-from dista.app.harmony_app import HarmonyApp
-from dista.app.app import App
+from hmbot.event import KeyEvent
+from hmbot.proto import SystemKey
+from hmbot.ptg import PTG
+from hmbot.page import Page
+from hmbot.app.harmony_app import HarmonyApp
+from hmbot.app.app import App
 
 
-device1 = Device('127.0.0.1:5555', 'harmony')
-app = HarmonyApp(device=device1)
-print(app.bundle, app.entry, app.main_page, app.name)
-print(isinstance(app, App))
-print(isinstance(app, HarmonyApp))
+device = Device('127.0.0.1:5555', 'harmony')
+page = device.dump_page()
+write('test.png',page.img)
+
+# app = HarmonyApp(device=device1)
+# print(app.bundle, app.entry, app.main_page, app.name)
+# print(isinstance(app, App))
+# print(isinstance(app, HarmonyApp))
 # print(device1.connector.current_ability())
 # device2 = Device('emulator-5554', 'android')
 # print(device.connector._hidumper('AbilityManagerService', '-i 16'))

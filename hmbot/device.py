@@ -91,8 +91,13 @@ class Device(object):
         window = Window(vht=vht, screen=screen)
         return window
 
-    def dump_page(self, app):
-        return self.dump_window().current_page(app)
+    def dump_page(self, split=False, app=None):
+        if not split:
+            window = self.dump_window()
+            if window._pages:
+                return window._pages[0]
+        if split and isinstance(app, App):
+            return self.dump_window().current_page(app)
 
     def current_ability(self):
         return self.connector.current_ability()
