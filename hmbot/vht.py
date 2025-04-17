@@ -22,8 +22,8 @@ class VHT(object):
     
     def _compress(self, node):
         if len(node._children) == 1 and node.attribute['bounds'] == node._children[0].attribute['bounds']:
-            node._children = node._children[0]._children
             node._compress(node._children[0])
+            node._children = node._children[0]._children
             self._compress(node)
         else:
             for child in node._children:
