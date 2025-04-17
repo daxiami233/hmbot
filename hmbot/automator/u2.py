@@ -48,19 +48,26 @@ class U2(Automator):
     def long_click(self, x, y):
         return self._driver.long_click(x, y)
 
-    def drag(self, x1, y1, x2, y2, speed=2000):
-        return self._driver.swipe(x1, y1, x2, y2, speed)
+    def drag(self, x1, y1, x2, y2, speed=0.5):
+        if x1 < 1 and y1 < 1 and x2 < 1 and y2 < 1:
+            self.display_info(refresh=True)
+            width = self._display_info.width
+            height = self._display_info.height
+            print(x1*width, y1*height, x2*width, y2*height, speed)
+            return self._driver.swipe(x1*width, y1*height, x2*width, y2*height, speed)
+        else:
+            return self._driver.swipe(x1, y1, x2, y2, speed)
 
-    def swipe(self, direction, scale):
+    def swipe(self, direction, scale=0.4):
         #to check
         if direction == SwipeDirection.LEFT :
-            self._driver.swipe(0.5, 0.5, 0.5-scale, 0.5, 500)
+            self.drag(0.5, 0.5, 0.5-scale, 0.5)
         elif direction == SwipeDirection.RIGHT :
-            self._driver.swipe(0.5, 0.5, 0.5+scale, 0.5, 500)
+            self.drag(0.5, 0.5, 0.5+scale, 0.5)
         elif direction == SwipeDirection.UP :
-            self._driver.swipe(0.5, 0.5, 0.5, 0.5-scale, 500)
+            self.drag(0.5, 0.5, 0.5, 0.5-scale)
         elif direction == SwipeDirection.DOWN :
-            self._driver.swipe(0.5, 0.5, 0.5, 0.5+scale, 500)
+            self.drag(0.5, 0.5, 0.5, 0.5+scale)
 
     def dump_hierarchy(self):
         root = VHTParser._parse_adb_xml(self._driver.dump_hierarchy(compressed=True))._root

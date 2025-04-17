@@ -53,7 +53,7 @@ class H2(Automator):
     def drag(self, x1, y1, x2, y2, speed=2000):
         return self._driver.swipe(x1, y1, x2, y2, speed)
 
-    def swipe(self, direction, scale):
+    def swipe(self, direction, scale=0.3):
         if direction == SwipeDirection.LEFT :
             self._driver.swipe(0.5, 0.5, 0.5-scale, 0.5, 500)
         elif direction == SwipeDirection.RIGHT :

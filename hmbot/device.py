@@ -61,8 +61,8 @@ class Device(object):
     def drag(self, x1, y1, x2, y2, speed=2000):
         return self.automator.drag(x1, y1, x2, y2, speed)
 
-    def swipe(self, direction: Union[SwipeDirection, str], scale: float = 0.3):
-        return self.automator.swipe(direction, scale)
+    def swipe(self, direction: Union[SwipeDirection, str]):
+        return self.automator.swipe(direction)
 
     def dump_hierarchy(self):
         return self.automator.dump_hierarchy()
