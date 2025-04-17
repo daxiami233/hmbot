@@ -23,6 +23,7 @@ class VHT(object):
     def _compress(self, node):
         if len(node._children) == 1 and node.attribute['bounds'] == node._children[0].attribute['bounds']:
             node._children = node._children[0]._children
+            node._compress(node._children[0])
             self._compress(node)
         else:
             for child in node._children:
@@ -98,6 +99,14 @@ class VHTNode(object):
             if key not in self.attribute or self.attribute[key] != value:
                 return False
         return True
+    
+    def _compress(self, node):
+        for (key, value) in self.attribute.items():
+             if key in ['clickable', 'longClickable', 'selected', 'checkable', 'checked']:
+                if value == 'true' or node.attribute[key] == 'true':
+                    self.attribute[key] = 'true'
+        self.attribute['text'] += node.attribute['text']
+
     
 
 class VHTParser(object):
