@@ -58,6 +58,15 @@ class U2(Automator):
         else:
             return self._driver.swipe(x1, y1, x2, y2, speed)
 
+    def _drag(self, x1, y1, x2, y2, duration=0.5):
+        if x1 < 1 and y1 < 1 and x2 < 1 and y2 < 1:
+            self.display_info(refresh=True)
+            width = self._display_info.width
+            height = self._display_info.height
+            return self._driver.drag(x1 * width, y1 * height, x2 * width, y2 * height, duration)
+        else:
+            return self._driver.drag(x1, y1, x2, y2, duration)
+
     def swipe(self, direction, scale=0.4):
         #to check
         if direction == SwipeDirection.LEFT :

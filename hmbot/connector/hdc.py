@@ -168,7 +168,7 @@ class HDC(Connector):
     def get_camera_status(self):
         pass
 
-    def get_micro_status(self):
+    def get_micro_status(self, bundle):
         pass
 
     def get_keyboard_status(self):

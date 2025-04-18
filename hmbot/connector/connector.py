@@ -94,7 +94,7 @@ class Connector(ABC):
         pass
 
     @abstractmethod
-    def get_micro_status(self):
+    def get_micro_status(self, bundle):
         """
         Run a shell-command and return the micro status of the current app.
 

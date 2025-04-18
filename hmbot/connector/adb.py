@@ -162,8 +162,20 @@ class ADB(Connector):
     def get_camera_status(self):
         pass
 
-    def get_micro_status(self):
-        pass
+    def get_micro_status(self, bundle):
+        mic_infos = self.shell_grep("dumpsys audio", "src:").splitlines()
+        status = ''
+        silenced = ''
+        for mic_info in mic_infos:
+            mic_re = re.compile(f".*rec (.*) riid.*src:(.*) pack:{bundle}.*")
+            match = mic_re.match(mic_info)
+            if match:
+                status = match.group(1)
+                silenced = match.group(2)
+        if status in ['stop', 'release'] or 'not' not in silenced:
+            return 'stop'
+        return 'start'
+
 
     def get_keyboard_status(self):
         pass

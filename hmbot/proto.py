@@ -59,3 +59,7 @@ class AudioStatus:
     PAUSE_ = 'PAUSE*'
     DUCK = 'DUCK'
     STOP = 'STOP'
+
+class MicroStatus:
+    START = 'start'
+    STOP = 'stop'
