@@ -80,7 +80,8 @@ class U2(Automator):
 
     def dump_hierarchy(self):
         root = VHTParser._parse_adb_xml(self._driver.dump_hierarchy(compressed=True))._root
-        root_child = max(root._children, key=lambda child: child.attribute['bounds'][1][1])
+        root_child = max(root._children, key=lambda child:
+            (child.attribute['bounds'][1][0] - child.attribute['bounds'][0][0]) * (child.attribute['bounds'][1][1] - child.attribute['bounds'][0][1]))
         root_child.attribute['type'] = 'root'
         root_child.attribute['page'] = self._current()['activity']
         return VHT(root)
