@@ -1,10 +1,12 @@
 import sys
+import time
 from typing import Union
 from loguru import logger
 from .app.app import App
 from .exception import*
 from .proto import SwipeDirection
 from .rfl.system_rfl import system_rfl
+from .vht import VHTNode
 from .window import Window
 
 class Device(object):
@@ -61,6 +63,9 @@ class Device(object):
     def drag(self, x1, y1, x2, y2, speed=2000):
         return self.automator.drag(x1, y1, x2, y2, speed)
 
+    def _drag(self, x1, y1, x2, y2, duration=0.5):
+        return self.automator._drag(x1, y1, x2, y2, duration)
+
     def swipe(self, direction: Union[SwipeDirection, str]):
         return self.automator.swipe(direction)
 
@@ -101,3 +106,20 @@ class Device(object):
 
     def current_ability(self):
         return self.connector.current_ability()
+
+    def hop(self, dst_device_name=None):
+        if not dst_device_name:
+            return
+        bundle = self.current_ability().get('bundle')
+        self.recent()
+        time.sleep(1)
+        self.swipe('left')
+        vht = self.dump_hierarchy()
+        snode = vht.all(type='root')
+        [sx, sy] = snode[0].attribute.get('center')
+        dnode = vht.all(text=dst_device_name)
+        [dx, dy] = dnode[0].attribute.get('center')
+        time.sleep(1)
+        self._drag(sx, sy, dx, dy, 1.0)
+        print(f'hop: {bundle} to {dst_device_name}')
+        return

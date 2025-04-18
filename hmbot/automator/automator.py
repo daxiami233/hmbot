@@ -87,6 +87,19 @@ class Automator(ABC):
         pass
 
     @abstractmethod
+    def _drag(self, x1, y1, x2, y2, duration=0.5):
+        """
+        Drag from (x1, y1) to (x2, y2)
+
+        Args:
+            x1 (float): The start X coordinate.
+            y1 (float): The start Y coordinate.
+            x2 (float): The end X coordinate.
+            y2 (float): The end Y coordinate.
+        """
+        pass
+
+    @abstractmethod
     def swipe(self, direction, scale):
         """
         Swipe to direction.
